@@ -1,7 +1,13 @@
+import i18n from 'i18next';
+
 const API_URL = 'http://localhost:9000/api/v1/medicos';
 
 export async function getMedicos() {
-  const response = await fetch(API_URL);
+  const response = await fetch(API_URL, {
+    headers: {
+      'Accept-Language': i18n.language,
+    },
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch medicos');
   }
@@ -13,6 +19,7 @@ export async function createMedico(data) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Accept-Language': i18n.language,
     },
     body: JSON.stringify(data),
   });

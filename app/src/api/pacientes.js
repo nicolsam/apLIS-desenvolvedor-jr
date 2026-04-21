@@ -1,7 +1,13 @@
+import i18n from 'i18next';
+
 const API_URL = 'http://localhost:3000/api/v1/pacientes';
 
 export async function getPacientes() {
-  const response = await fetch(API_URL);
+  const response = await fetch(API_URL, {
+    headers: {
+      'Accept-Language': i18n.language,
+    },
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch pacientes');
   }
@@ -18,6 +24,7 @@ export async function createPaciente(data) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Accept-Language': i18n.language,
     },
     body: JSON.stringify(payload),
   });
