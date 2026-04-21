@@ -58,5 +58,32 @@ describe('Paciente Controller', () => {
       expect(res.status).toBe(400);
       expect(res.body.error).toBe('Dados inválidos');
     });
+
+    it('should return 409 for duplicate CPF', async () => {
+      const duplicateCpf = '99988877766';
+      
+      await request(app)
+        .post('/api/v1/pacientes')
+        .send({
+          nome: 'First Patient',
+          dataNascimento: '2026-01-01',
+          carteirinha: '111222',
+          cpf: duplicateCpf
+        })
+        .set('Content-Type', 'application/json');
+
+      const res = await request(app)
+        .post('/api/v1/pacientes')
+        .send({
+          nome: 'Second Patient',
+          dataNascimento: '2026-01-01',
+          carteirinha: '333444',
+          cpf: duplicateCpf
+        })
+        .set('Content-Type', 'application/json');
+
+      expect(res.status).toBe(409);
+      expect(res.body.error).toBe('CPF já cadastrado no sistema');
+    });
   });
 });
