@@ -10,5 +10,5 @@ export const pacienteSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
   dataNascimento: z.string().min(1, 'Data de nascimento é obrigatória'),
   carteirinha: z.string().regex(/^\d+$/, 'Carteirinha deve conter apenas números'),
-  cpf: z.string().regex(/^\d{11}$/, 'CPF deve ter 11 dígitos numéricos (XXX.XXX.XXX-XX)'),
+  cpf: z.string().regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF deve ter 11 dígitos (XXX.XXX.XXX-XX)'),
 });
