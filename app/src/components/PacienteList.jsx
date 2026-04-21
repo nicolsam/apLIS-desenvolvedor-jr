@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Table } from 'flowbite-react';
 import { getPacientes } from '../api/pacientes';
 
 export default function PacienteList() {
@@ -33,26 +32,30 @@ export default function PacienteList() {
       ) : pacientes.length === 0 ? (
         <div className="text-center py-4 text-gray-500">No pacientes found</div>
       ) : (
-        <Table hoverable>
-          <Table.Head>
-            <Table.HeadCell>ID</Table.HeadCell>
-            <Table.HeadCell>Nome</Table.HeadCell>
-            <Table.HeadCell>Data Nascimento</Table.HeadCell>
-            <Table.HeadCell>Carteirinha</Table.HeadCell>
-            <Table.HeadCell>CPF</Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {pacientes.map((paciente) => (
-              <Table.Row key={paciente.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell>{paciente.id}</Table.Cell>
-                <Table.Cell>{paciente.nome}</Table.Cell>
-                <Table.Cell>{new Date(paciente.dataNascimento).toLocaleDateString()}</Table.Cell>
-                <Table.Cell>{paciente.carteirinha}</Table.Cell>
-                <Table.Cell>{paciente.cpf}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">ID</th>
+                <th scope="col" className="px-6 py-3">Nome</th>
+                <th scope="col" className="px-6 py-3">Data Nascimento</th>
+                <th scope="col" className="px-6 py-3">Carteirinha</th>
+                <th scope="col" className="px-6 py-3">CPF</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pacientes.map((paciente) => (
+                <tr key={paciente.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{paciente.id}</td>
+                  <td className="px-6 py-4">{paciente.nome}</td>
+                  <td className="px-6 py-4">{new Date(paciente.dataNascimento).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">{paciente.carteirinha}</td>
+                  <td className="px-6 py-4">{paciente.cpf}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
