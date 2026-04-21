@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './i18n';
 import Sidebar from './components/Sidebar';
 import Medicos from './pages/Medicos';
 import Pacientes from './pages/Pacientes';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
             <Route path="/" element={<Navigate to="/medicos" replace />} />
             <Route path="/medicos" element={<Medicos />} />
             <Route path="/pacientes" element={<Pacientes />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
       </div>

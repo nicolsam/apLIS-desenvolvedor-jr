@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navItems = [
-    { path: '/medicos', label: 'Médicos' },
-    { path: '/pacientes', label: 'Pacientes' },
+    { path: '/medicos', labelKey: 'app.medicos' },
+    { path: '/pacientes', labelKey: 'app.pacientes' },
+    { path: '/settings', labelKey: 'app.settings' },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -29,7 +32,7 @@ export default function Sidebar() {
         }`}
       >
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-800">apLIS</h2>
+          <h2 className="text-xl font-bold text-gray-800">{t('app.title')}</h2>
         </div>
 
         <nav className="px-4">
@@ -45,7 +48,7 @@ export default function Sidebar() {
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <span className="ml-3">{item.label}</span>
+                  <span className="ml-3">{t(item.labelKey)}</span>
                 </Link>
               </li>
             ))}

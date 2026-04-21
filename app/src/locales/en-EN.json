@@ -1,0 +1,62 @@
+{
+  "app": {
+    "title": "apLIS",
+    "settings": "Settings",
+    "medicos": "Doctors",
+    "pacientes": "Patients"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "dateFormat": "Date Format",
+    "save": "Save",
+    "saved": "Settings saved!"
+  },
+  "medicos": {
+    "title": "Doctors",
+    "add": "Add",
+    "id": "ID",
+    "name": "Name",
+    "crm": "CRM",
+    "uf": "State",
+    "addModal": {
+      "title": "Add Doctor",
+      "name": "Name",
+      "crm": "CRM",
+      "uf": "State",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "error": "Error saving doctor. Try again."
+    }
+  },
+  "pacientes": {
+    "title": "Patients",
+    "add": "Add",
+    "id": "ID",
+    "name": "Name",
+    "birthDate": "Birth Date",
+    "card": "Card Number",
+    "cpf": "CPF",
+    "addModal": {
+      "title": "Add Patient",
+      "name": "Name",
+      "birthDate": "Birth Date",
+      "card": "Card Number",
+      "cpf": "CPF",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "error": "Error saving patient. Try again."
+    }
+  },
+  "validation": {
+    "required": "Field required",
+    "nome_required": "Name is required",
+    "crm_required": "CRM is required",
+    "uf_length": "State must have 2 characters",
+    "dataNascimento_required": "Birth date is required",
+    "carteirinha_numbers": "Card number must contain only numbers",
+    "cpf_format": "CPF must have 11 digits (XXX.XXX.XXX-XX)"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "app": {
+    "title": "apLIS",
+    "settings": "Configurações",
+    "medicos": "Médicos",
+    "pacientes": "Pacientes"
+  },
+  "settings": {
+    "title": "Configurações",
+    "language": "Idioma",
+    "dateFormat": "Formato de Data",
+    "save": "Salvar",
+    "saved": "Configurações salvas!"
+  },
+  "medicos": {
+    "title": "Médicos",
+    "add": "Adicionar",
+    "id": "ID",
+    "name": "Nome",
+    "crm": "CRM",
+    "uf": "UF",
+    "addModal": {
+      "title": "Adicionar Médico",
+      "name": "Nome",
+      "crm": "CRM",
+      "uf": "UF",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "saving": "Salvando...",
+      "error": "Erro ao salvar médico. Tente novamente."
+    }
+  },
+  "pacientes": {
+    "title": "Pacientes",
+    "add": "Adicionar",
+    "id": "ID",
+    "name": "Nome",
+    "birthDate": "Data de Nascimento",
+    "card": "Carteirinha",
+    "cpf": "CPF",
+    "addModal": {
+      "title": "Adicionar Paciente",
+      "name": "Nome",
+      "birthDate": "Data de Nascimento",
+      "card": "Carteirinha",
+      "cpf": "CPF",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "saving": "Salvando...",
+      "error": "Erro ao salvar paciente. Tente novamente."
+    }
+  },
+  "validation": {
+    "required": "Campo obrigatório",
+    "nome_required": "Nome é obrigatório",
+    "crm_required": "CRM é obrigatório",
+    "uf_length": "UF deve ter 2 caracteres",
+    "dataNascimento_required": "Data de nascimento é obrigatória",
+    "carteirinha_numbers": "Carteirinha deve conter apenas números",
+    "cpf_format": "CPF deve ter 11 dígitos (XXX.XXX.XXX-XX)"
+  }
+}
