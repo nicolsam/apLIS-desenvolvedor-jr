@@ -1,15 +1,23 @@
 services:
   php:
-    image: php:8.3-fpm
+    build:
+      context: ./backendphp
+      dockerfile: Dockerfile
     container_name: aplis_php
-    volumes:
-      - ./backendphp:/var/www/html
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root_password
+      DB_NAME: aplis_test
     expose:
       - "9000"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - aplis_network
+    command: php-fpm
 
   nodejs:
     build:
@@ -45,6 +53,8 @@ services:
       - php
     networks:
       - aplis_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   mysql:
     image: mysql:latest
