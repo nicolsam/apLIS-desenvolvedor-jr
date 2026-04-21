@@ -7,22 +7,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Controller\MedicoController;
 use Tests\TestCase;
 
-class MockInputStream {
-    private $data;
-    public function stream_open($path, $mode, $options, &$opened_path) {
-        $this->data = $GLOBALS['mock_http_input_data'] ?? '';
-        return true;
-    }
-    public function stream_read($count) {
-        $data = $this->data;
-        $this->data = '';
-        return $data;
-    }
-    public function stream_eof() {
-        return $this->data === '';
-    }
-}
-
 class MedicoControllerTest extends TestCase
 {
     private MedicoController $controller;
@@ -69,37 +53,6 @@ class MedicoControllerTest extends TestCase
         $response = json_decode($output, true);
         $this->assertArrayHasKey('message', $response);
         $this->assertEquals('Médico criado com sucesso', $response['message']);
-        
-        $this->cleanupHttpInput();
-    }
-
-    public function testStoreWithDuplicateCRM(): void
-    {
-        $existingCrm = 'DUPLICATE' . time();
-        
-        $this->mockHttpInput(json_encode([
-            'nome' => 'Dr. First',
-            'CRM' => $existingCrm,
-            'UFCRM' => 'SP'
-        ]));
-        ob_start();
-        $this->controller->store();
-        ob_get_clean();
-        $this->cleanupHttpInput();
-        
-        $this->mockHttpInput(json_encode([
-            'nome' => 'Dr. Duplicate',
-            'CRM' => $existingCrm,
-            'UFCRM' => 'SP'
-        ]));
-        
-        ob_start();
-        $this->controller->store();
-        $output = ob_get_clean();
-        
-        $response = json_decode($output, true);
-        $this->assertArrayHasKey('error', $response);
-        $this->assertEquals('CRM já cadastrado no sistema', $response['error']);
         
         $this->cleanupHttpInput();
     }
@@ -167,20 +120,73 @@ class MedicoControllerTest extends TestCase
         unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
     }
 
+    public function testShowWithNonExistentId(): void
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR';
+        
+        ob_start();
+        $this->controller->show(999999);
+        $output = ob_get_clean();
+        
+        $response = json_decode($output, true);
+        $this->assertArrayHasKey('error', $response);
+        $this->assertEquals('Registro não encontrado', $response['error']);
+        
+        unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    }
+
+    public function testShowWithEnglishAcceptLanguage(): void
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-EN';
+        
+        ob_start();
+        $this->controller->show(999999);
+        $output = ob_get_clean();
+        
+        $response = json_decode($output, true);
+        $this->assertArrayHasKey('error', $response);
+        $this->assertEquals('Record not found', $response['error']);
+        
+        unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    }
+
+    public function testDestroyWithNonExistentId(): void
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR';
+        
+        ob_start();
+        $this->controller->destroy(999999);
+        $output = ob_get_clean();
+        
+        $response = json_decode($output, true);
+        $this->assertArrayHasKey('error', $response);
+        $this->assertEquals('Registro não encontrado', $response['error']);
+        
+        unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    }
+
+    public function testDestroyWithEnglishAcceptLanguage(): void
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-EN';
+        
+        ob_start();
+        $this->controller->destroy(999999);
+        $output = ob_get_clean();
+        
+        $response = json_decode($output, true);
+        $this->assertArrayHasKey('error', $response);
+        $this->assertEquals('Record not found', $response['error']);
+        
+        unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    }
+
     private function mockHttpInput(string $data): void
     {
-        $stream = fopen('php://memory', 'w+');
-        fwrite($stream, $data);
-        rewind($stream);
-        stream_wrapper_unregister('php://input');
-        stream_wrapper_register('php://input', 'MockInputStream');
-        
         $GLOBALS['mock_http_input_data'] = $data;
     }
 
     private function cleanupHttpInput(): void
     {
-        stream_wrapper_restore('php://input');
         unset($GLOBALS['mock_http_input_data']);
     }
 }

@@ -32,7 +32,8 @@ class MedicoController
 
     public function store(): void
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        $inputData = $GLOBALS['mock_http_input_data'] ?? null;
+        $data = $inputData ? json_decode($inputData, true) : json_decode(file_get_contents('php://input'), true);
         
         if (!isset($data['nome']) || !isset($data['CRM']) || !isset($data['UFCRM'])) {
             http_response_code(400);
@@ -60,7 +61,8 @@ class MedicoController
 
     public function update(int $id): void
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        $inputData = $GLOBALS['mock_http_input_data'] ?? null;
+        $data = $inputData ? json_decode($inputData, true) : json_decode(file_get_contents('php://input'), true);
         
         if (!isset($data['nome']) || !isset($data['CRM']) || !isset($data['UFCRM'])) {
             http_response_code(400);
