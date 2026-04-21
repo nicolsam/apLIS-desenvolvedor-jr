@@ -26,13 +26,20 @@ class MedicoController
         }
 
         $medico = new \App\Model\Medico();
-        $result = $medico->create($data);
-
-        if ($result) {
-            echo json_encode(['message' => 'Médico criado com sucesso']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Erro ao criar médico']);
+        
+        try {
+            $result = $medico->create($data);
+            if ($result) {
+                echo json_encode(['message' => 'Médico criado com sucesso']);
+            }
+        } catch (\Exception $e) {
+            if ($e->getCode() == 409) {
+                http_response_code(409);
+                echo json_encode(['error' => 'CRM já cadastrado no sistema']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['error' => 'Erro ao criar médico']);
+            }
         }
     }
 }

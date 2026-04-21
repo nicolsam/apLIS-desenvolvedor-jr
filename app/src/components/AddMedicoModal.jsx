@@ -44,7 +44,10 @@ export default function AddMedicoModal({ show, onClose, onSuccess }) {
       onSuccess();
       onClose();
     } catch (err) {
-      setServerError('Erro ao salvar médico. Tente novamente.');
+      const errorMessage = err.message?.includes('{') 
+        ? JSON.parse(err.message).error 
+        : err.message;
+      setServerError(errorMessage || 'Erro ao salvar médico. Tente novamente.');
     } finally {
       setLoading(false);
     }

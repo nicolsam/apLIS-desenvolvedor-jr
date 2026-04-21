@@ -21,6 +21,9 @@ class PacienteController {
       await Paciente.create(req.body);
       res.json({ message: 'Paciente criado com sucesso' });
     } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({ error: 'CPF já cadastrado no sistema' });
+      }
       res.status(500).json({ error: error.message });
     }
   }

@@ -54,7 +54,10 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
       onSuccess();
       onClose();
     } catch (err) {
-      setServerError('Erro ao salvar paciente. Tente novamente.');
+      const errorMessage = err.message?.includes('{') 
+        ? JSON.parse(err.message).error 
+        : err.message;
+      setServerError(errorMessage || 'Erro ao salvar paciente. Tente novamente.');
     } finally {
       setLoading(false);
     }
