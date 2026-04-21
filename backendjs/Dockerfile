@@ -10,6 +10,8 @@ COPY knexfile.js ./
 COPY migrations ./migrations
 COPY seeds ./seeds
 COPY src ./src
+COPY tests ./tests
+COPY jest.config.js ./
 
 EXPOSE 3000
 

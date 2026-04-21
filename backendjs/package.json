@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "migrate": "npx knex migrate:latest",
     "migrate:rollback": "npx knex migrate:rollback",
     "seed": "npx knex seed:run"
@@ -17,5 +18,8 @@
     "knex": "^3.1.0",
     "mysql2": "^3.11.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
 }
