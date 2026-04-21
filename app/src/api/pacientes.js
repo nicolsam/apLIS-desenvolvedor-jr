@@ -21,8 +21,10 @@ export async function createPaciente(data) {
     },
     body: JSON.stringify(payload),
   });
+  const result = await response.json();
+  
   if (!response.ok) {
-    throw new Error('Failed to create paciente');
+    throw new Error(JSON.stringify({ error: result.error || 'Erro ao criar paciente' }));
   }
-  return response.json();
+  return result;
 }

@@ -16,8 +16,10 @@ export async function createMedico(data) {
     },
     body: JSON.stringify(data),
   });
+  const result = await response.json();
+  
   if (!response.ok) {
-    throw new Error('Failed to create medico');
+    throw new Error(JSON.stringify({ error: result.error || 'Erro ao criar médico' }));
   }
-  return response.json();
+  return result;
 }
