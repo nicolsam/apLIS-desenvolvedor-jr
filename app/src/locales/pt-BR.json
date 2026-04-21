@@ -12,6 +12,11 @@
     "save": "Salvar",
     "saved": "Configurações salvas!"
   },
+  "actions": {
+    "edit": "Editar",
+    "delete": "Excluir",
+    "actions": "Ações"
+  },
   "medicos": {
     "title": "Médicos",
     "add": "Adicionar",
@@ -21,13 +26,16 @@
     "uf": "UF",
     "addModal": {
       "title": "Adicionar Médico",
+      "editTitle": "Editar Médico",
       "name": "Nome",
       "crm": "CRM",
       "uf": "UF",
       "cancel": "Cancelar",
       "save": "Salvar",
+      "updating": "Atualizando...",
       "saving": "Salvando...",
-      "error": "Erro ao salvar médico. Tente novamente."
+      "error": "Erro ao salvar médico. Tente novamente.",
+      "updateError": "Erro ao atualizar médico. Tente novamente."
     }
   },
   "pacientes": {
@@ -40,15 +48,23 @@
     "cpf": "CPF",
     "addModal": {
       "title": "Adicionar Paciente",
+      "editTitle": "Editar Paciente",
       "name": "Nome",
       "birthDate": "Data de Nascimento",
       "card": "Carteirinha",
       "cpf": "CPF",
       "cancel": "Cancelar",
       "save": "Salvar",
+      "updating": "Atualizando...",
       "saving": "Salvando...",
-      "error": "Erro ao salvar paciente. Tente novamente."
+      "error": "Erro ao salvar paciente. Tente novamente.",
+      "updateError": "Erro ao atualizar paciente. Tente novamente."
     }
+  },
+  "delete": {
+    "removed": "Registro removido",
+    "undo": "Desfazer",
+    "undoComing": "Funcionalidade de desfazer em breve"
   },
   "validation": {
     "required": "Campo obrigatório",

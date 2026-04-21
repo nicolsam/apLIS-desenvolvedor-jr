@@ -12,6 +12,11 @@
     "save": "Save",
     "saved": "Settings saved!"
   },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions"
+  },
   "medicos": {
     "title": "Doctors",
     "add": "Add",
@@ -21,13 +26,16 @@
     "uf": "State",
     "addModal": {
       "title": "Add Doctor",
+      "editTitle": "Edit Doctor",
       "name": "Name",
       "crm": "CRM",
       "uf": "State",
       "cancel": "Cancel",
       "save": "Save",
+      "updating": "Updating...",
       "saving": "Saving...",
-      "error": "Error saving doctor. Try again."
+      "error": "Error saving doctor. Try again.",
+      "updateError": "Error updating doctor. Try again."
     }
   },
   "pacientes": {
@@ -40,15 +48,23 @@
     "cpf": "CPF",
     "addModal": {
       "title": "Add Patient",
+      "editTitle": "Edit Patient",
       "name": "Name",
       "birthDate": "Birth Date",
       "card": "Card Number",
       "cpf": "CPF",
       "cancel": "Cancel",
       "save": "Save",
+      "updating": "Updating...",
       "saving": "Saving...",
-      "error": "Error saving patient. Try again."
+      "error": "Error saving patient. Try again.",
+      "updateError": "Error updating patient. Try again."
     }
+  },
+  "delete": {
+    "removed": "Record removed",
+    "undo": "Undo",
+    "undoComing": "Undo feature coming soon"
   },
   "validation": {
     "required": "Field required",

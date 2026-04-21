@@ -5,10 +5,21 @@ import AddMedicoModal from '../components/AddMedicoModal';
 
 export default function Medicos() {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingMedico, setEditingMedico] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const { t } = useTranslation();
 
   const handleSuccess = () => {
+    setRefreshKey((k) => k + 1);
+  };
+
+  const handleEdit = (medico) => {
+    setEditingMedico(medico);
+    setShowEditModal(true);
+  };
+
+  const handleSuccessEdit = () => {
     setRefreshKey((k) => k + 1);
   };
 
@@ -23,11 +34,18 @@ export default function Medicos() {
           {t('medicos.add')}
         </button>
       </div>
-      <MedicoList key={refreshKey} />
+      <MedicoList key={refreshKey} onEdit={handleEdit} onSuccess={handleSuccess} />
       <AddMedicoModal
         show={showModal}
         onClose={() => setShowModal(false)}
         onSuccess={handleSuccess}
+      />
+      <AddMedicoModal
+        show={showEditModal}
+        onClose={() => { setShowEditModal(false); setEditingMedico(null); }}
+        isEdit={true}
+        initialData={editingMedico}
+        onSuccessEdit={handleSuccessEdit}
       />
     </div>
   );

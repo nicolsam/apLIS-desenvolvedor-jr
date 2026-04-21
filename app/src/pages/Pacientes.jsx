@@ -5,10 +5,21 @@ import AddPacienteModal from '../components/AddPacienteModal';
 
 export default function Pacientes() {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingPaciente, setEditingPaciente] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const { t } = useTranslation();
 
   const handleSuccess = () => {
+    setRefreshKey((k) => k + 1);
+  };
+
+  const handleEdit = (paciente) => {
+    setEditingPaciente(paciente);
+    setShowEditModal(true);
+  };
+
+  const handleSuccessEdit = () => {
     setRefreshKey((k) => k + 1);
   };
 
@@ -23,11 +34,18 @@ export default function Pacientes() {
           {t('pacientes.add')}
         </button>
       </div>
-      <PacienteList key={refreshKey} />
+      <PacienteList key={refreshKey} onEdit={handleEdit} onSuccess={handleSuccess} />
       <AddPacienteModal
         show={showModal}
         onClose={() => setShowModal(false)}
         onSuccess={handleSuccess}
+      />
+      <AddPacienteModal
+        show={showEditModal}
+        onClose={() => { setShowEditModal(false); setEditingPaciente(null); }}
+        isEdit={true}
+        initialData={editingPaciente}
+        onSuccessEdit={handleSuccessEdit}
       />
     </div>
   );

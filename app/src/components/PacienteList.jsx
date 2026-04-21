@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getPacientes } from '../api/pacientes';
+import { getPacientes, deletePaciente } from '../api/pacientes';
 import { useSettings } from '../hooks/useSettings';
+import { useToast } from './Toast';
 
-export default function PacienteList() {
+export default function PacienteList({ onEdit, onSuccess }) {
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { formatDate } = useSettings();
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   const fetchPacientes = async () => {
     try {
@@ -26,6 +28,23 @@ export default function PacienteList() {
   useEffect(() => {
     fetchPacientes();
   }, []);
+
+  const handleDelete = async (paciente) => {
+    try {
+      await deletePaciente(paciente.id);
+      addToast(t('delete.removed'), 'success');
+      addToast(t('delete.undoComing'), 'info');
+      fetchPacientes();
+      if (onSuccess) onSuccess();
+    } catch (err) {
+      let errorMessage = err.message;
+      try {
+        const parsed = JSON.parse(err.message);
+        errorMessage = parsed.error || errorMessage;
+      } catch {}
+      addToast(errorMessage, 'error');
+    }
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -45,6 +64,7 @@ export default function PacienteList() {
                 <th scope="col" className="px-6 py-3">{t('pacientes.birthDate')}</th>
                 <th scope="col" className="px-6 py-3">{t('pacientes.card')}</th>
                 <th scope="col" className="px-6 py-3">{t('pacientes.cpf')}</th>
+                <th scope="col" className="px-6 py-3">{t('actions.actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -55,6 +75,26 @@ export default function PacienteList() {
                   <td className="px-6 py-4">{formatDate(paciente.dataNascimento)}</td>
                   <td className="px-6 py-4">{paciente.carteirinha}</td>
                   <td className="px-6 py-4">{paciente.cpf}</td>
+                  <td className="px-6 py-4 flex gap-2">
+                    <button
+                      onClick={() => onEdit(paciente)}
+                      className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                      title={t('actions.edit')}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(paciente)}
+                      className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                      title={t('actions.delete')}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

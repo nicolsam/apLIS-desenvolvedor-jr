@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createPaciente } from '../api/pacientes';
+import { createPaciente, updatePaciente } from '../api/pacientes';
 import { parseWithSchema, pacienteSchema } from '../validation/schemas';
 
-export default function AddPacienteModal({ show, onClose, onSuccess }) {
+const formatCPF = (value) => {
+  const numbers = value.replace(/\D/g, '');
+  if (numbers.length <= 3) return numbers;
+  if (numbers.length <= 6) return `${numbers.slice(0, 3)}.${numbers.slice(3)}`;
+  if (numbers.length <= 9) return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6)}`;
+  return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6, 9)}-${numbers.slice(9, 11)}`;
+};
+
+export default function AddPacienteModal({ show, onClose, onSuccess, isEdit = false, initialData = null, onSuccessEdit }) {
   const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     nome: '',
@@ -19,15 +27,20 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
-  if (!show) return null;
+  useEffect(() => {
+    if (isEdit && initialData) {
+      setFormData({
+        nome: initialData.nome || '',
+        dataNascimento: initialData.dataNascimento || '',
+        carteirinha: initialData.carteirinha || '',
+        cpf: initialData.cpf ? formatCPF(initialData.cpf) : '',
+      });
+    } else if (!isEdit) {
+      setFormData({ nome: '', dataNascimento: '', carteirinha: '', cpf: '' });
+    }
+  }, [isEdit, initialData, show]);
 
-  const formatCPF = (value) => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 3) return numbers;
-    if (numbers.length <= 6) return `${numbers.slice(0, 3)}.${numbers.slice(3)}`;
-    if (numbers.length <= 9) return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6)}`;
-    return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6, 9)}-${numbers.slice(9, 11)}`;
-  };
+  if (!show) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,17 +63,24 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
 
     try {
       setLoading(true);
-      await createPaciente(formData);
-      setFormData({ nome: '', dataNascimento: '', carteirinha: '', cpf: '' });
-      onSuccess();
-      onClose();
+      if (isEdit && initialData) {
+        await updatePaciente(initialData.id, formData);
+        setFormData({ nome: '', dataNascimento: '', carteirinha: '', cpf: '' });
+        if (onSuccessEdit) onSuccessEdit();
+        onClose();
+      } else {
+        await createPaciente(formData);
+        setFormData({ nome: '', dataNascimento: '', carteirinha: '', cpf: '' });
+        onSuccess();
+        onClose();
+      }
     } catch (err) {
       let errorMessage = err.message;
       try {
         const parsed = JSON.parse(err.message);
         errorMessage = parsed.error || errorMessage;
       } catch {}
-      setServerError(errorMessage || t('pacientes.addModal.error'));
+      setServerError(errorMessage || t(isEdit ? 'pacientes.addModal.updateError' : 'pacientes.addModal.error'));
     } finally {
       setLoading(false);
     }
@@ -70,7 +90,9 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="relative w-full max-w-md bg-white rounded-lg shadow dark:bg-gray-800">
         <div className="flex items-center justify-between p-4 border-b rounded-t-lg md:p-5 dark:border-gray-600">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('pacientes.addModal.title')}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            {isEdit ? t('pacientes.addModal.editTitle') : t('pacientes.addModal.title')}
+          </h3>
           <button onClick={onClose} className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 flex items-center justify-center">
             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4l6 6M10 4l-6 6"/>
@@ -132,7 +154,7 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
               {t('pacientes.addModal.cancel')}
             </button>
             <button type="submit" disabled={loading} className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700">
-              {loading ? t('pacientes.addModal.saving') : t('pacientes.addModal.save')}
+              {loading ? (isEdit ? t('pacientes.addModal.updating') : t('pacientes.addModal.saving')) : t('pacientes.addModal.save')}
             </button>
           </div>
         </form>
