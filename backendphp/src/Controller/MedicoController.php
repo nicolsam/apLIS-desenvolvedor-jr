@@ -16,6 +16,20 @@ class MedicoController
         echo json_encode($medicos);
     }
 
+    public function show(int $id): void
+    {
+        $medico = new \App\Model\Medico();
+        $result = $medico->find($id);
+        
+        header('Content-Type: application/json');
+        if ($result) {
+            echo json_encode($result);
+        } else {
+            http_response_code(404);
+            echo json_encode(['error' => \Translator::get('not_found')]);
+        }
+    }
+
     public function store(): void
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -41,6 +55,61 @@ class MedicoController
                 http_response_code(500);
                 echo json_encode(['error' => \Translator::get('error_creating')]);
             }
+        }
+    }
+
+    public function update(int $id): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if (!isset($data['nome']) || !isset($data['CRM']) || !isset($data['UFCRM'])) {
+            http_response_code(400);
+            echo json_encode(['error' => \Translator::get('invalid_data')]);
+            return;
+        }
+
+        $medico = new \App\Model\Medico();
+        
+        $exists = $medico->find($id);
+        if (!$exists) {
+            http_response_code(404);
+            echo json_encode(['error' => \Translator::get('not_found')]);
+            return;
+        }
+
+        try {
+            $result = $medico->update($id, $data);
+            if ($result) {
+                echo json_encode(['message' => \Translator::get('doctor_updated')]);
+            }
+        } catch (\Exception $e) {
+            if ($e->getCode() == 409) {
+                http_response_code(409);
+                echo json_encode(['error' => \Translator::get('crm_exists')]);
+            } else {
+                http_response_code(500);
+                echo json_encode(['error' => \Translator::get('error_updating')]);
+            }
+        }
+    }
+
+    public function destroy(int $id): void
+    {
+        $medico = new \App\Model\Medico();
+        
+        $exists = $medico->find($id);
+        if (!$exists) {
+            http_response_code(404);
+            echo json_encode(['error' => \Translator::get('not_found')]);
+            return;
+        }
+
+        $result = $medico->delete($id);
+        if ($result) {
+            echo json_encode(['message' => \Translator::get('doctor_deleted')]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => \Translator::get('error_deleting')]);
         }
     }
 }

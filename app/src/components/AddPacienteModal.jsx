@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createPaciente } from '../api/pacientes';
 import { parseWithSchema, pacienteSchema } from '../validation/schemas';
 
 export default function AddPacienteModal({ show, onClose, onSuccess }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     nome: '',
     dataNascimento: '',
@@ -14,6 +14,10 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
+
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
 
   if (!show) return null;
 
@@ -69,7 +73,7 @@ export default function AddPacienteModal({ show, onClose, onSuccess }) {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('pacientes.addModal.title')}</h3>
           <button onClick={onClose} className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 flex items-center justify-center">
             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6-6M7 1l6 6m0 0v6l-6-6V1Z"/>
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4l6 6M10 4l-6 6"/>
             </svg>
           </button>
         </div>

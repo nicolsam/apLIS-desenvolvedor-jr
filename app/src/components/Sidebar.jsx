@@ -7,9 +7,12 @@ export default function Sidebar() {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const navItems = [
+  const mainNavItems = [
     { path: '/medicos', labelKey: 'app.medicos' },
     { path: '/pacientes', labelKey: 'app.pacientes' },
+  ];
+
+  const footerNavItems = [
     { path: '/settings', labelKey: 'app.settings' },
   ];
 
@@ -27,7 +30,7 @@ export default function Sidebar() {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -35,9 +38,9 @@ export default function Sidebar() {
           <h2 className="text-xl font-bold text-gray-800">{t('app.title')}</h2>
         </div>
 
-        <nav className="px-4">
+        <nav className="flex-1 px-4">
           <ul className="space-y-2">
-            {navItems.map((item) => (
+            {mainNavItems.map((item) => (
               <li key={item.path}>
                 <Link
                   to={item.path}
@@ -54,6 +57,26 @@ export default function Sidebar() {
             ))}
           </ul>
         </nav>
+
+        <div className="px-4 py-4 border-t border-gray-200">
+          <ul className="space-y-2">
+            {footerNavItems.map((item) => (
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                    isActive(item.path)
+                      ? 'bg-blue-50 text-blue-700'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <span className="ml-3">{t(item.labelKey)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </aside>
 
       {isOpen && (
