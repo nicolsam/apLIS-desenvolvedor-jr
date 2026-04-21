@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 require_once __DIR__ . '/../Model/Medico.php';
+require_once __DIR__ . '/../Translator.php';
 
 class MedicoController
 {
@@ -21,7 +22,7 @@ class MedicoController
         
         if (!isset($data['nome']) || !isset($data['CRM']) || !isset($data['UFCRM'])) {
             http_response_code(400);
-            echo json_encode(['error' => 'Dados inválidos']);
+            echo json_encode(['error' => \Translator::get('invalid_data')]);
             return;
         }
 
@@ -30,15 +31,15 @@ class MedicoController
         try {
             $result = $medico->create($data);
             if ($result) {
-                echo json_encode(['message' => 'Médico criado com sucesso']);
+                echo json_encode(['message' => \Translator::get('doctor_created')]);
             }
         } catch (\Exception $e) {
             if ($e->getCode() == 409) {
                 http_response_code(409);
-                echo json_encode(['error' => 'CRM já cadastrado no sistema']);
+                echo json_encode(['error' => \Translator::get('crm_exists')]);
             } else {
                 http_response_code(500);
-                echo json_encode(['error' => 'Erro ao criar médico']);
+                echo json_encode(['error' => \Translator::get('error_creating')]);
             }
         }
     }

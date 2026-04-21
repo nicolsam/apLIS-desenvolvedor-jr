@@ -1,4 +1,5 @@
 const Paciente = require('../Model/Paciente');
+const { t } = require('../Translator');
 
 class PacienteController {
   async index(req, res) {
@@ -15,14 +16,14 @@ class PacienteController {
       const { nome, dataNascimento, carteirinha, cpf } = req.body;
 
       if (!nome || !dataNascimento || !carteirinha || !cpf) {
-        return res.status(400).json({ error: 'Dados inválidos' });
+        return res.status(400).json({ error: t('invalid_data', req) });
       }
 
       await Paciente.create(req.body);
-      res.json({ message: 'Paciente criado com sucesso' });
+      res.json({ message: t('patient_created', req) });
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        return res.status(409).json({ error: 'CPF já cadastrado no sistema' });
+        return res.status(409).json({ error: t('cpf_exists', req) });
       }
       res.status(500).json({ error: error.message });
     }
