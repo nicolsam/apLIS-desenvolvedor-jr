@@ -9,12 +9,17 @@ export async function getPacientes() {
 }
 
 export async function createPaciente(data) {
+  const payload = {
+    ...data,
+    cpf: data.cpf.replace(/\D/g, ''),
+  };
+  
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
   if (!response.ok) {
     throw new Error('Failed to create paciente');
