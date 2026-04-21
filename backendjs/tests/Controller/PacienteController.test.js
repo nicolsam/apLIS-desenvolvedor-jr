@@ -85,5 +85,29 @@ describe('Paciente Controller', () => {
       expect(res.status).toBe(409);
       expect(res.body.error).toBe('CPF já cadastrado no sistema');
     });
+
+    it('should return English message when Accept-Language is en-EN', async () => {
+      const uniqueCpf = (Date.now() + 2).toString().slice(-11);
+      
+      const res = await request(app)
+        .post('/api/v1/pacientes')
+        .send({ nome: 'Only Name' })
+        .set('Content-Type', 'application/json')
+        .set('Accept-Language', 'en-EN');
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('Invalid data');
+    });
+
+    it('should return Portuguese message when Accept-Language is pt-BR', async () => {
+      const res = await request(app)
+        .post('/api/v1/pacientes')
+        .send({ nome: 'Only Name' })
+        .set('Content-Type', 'application/json')
+        .set('Accept-Language', 'pt-BR');
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('Dados inválidos');
+    });
   });
 });
