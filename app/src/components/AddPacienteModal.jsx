@@ -29,9 +29,16 @@ export default function AddPacienteModal({ show, onClose, onSuccess, isEdit = fa
 
   useEffect(() => {
     if (isEdit && initialData) {
+      let birthDate = '';
+      if (initialData.dataNascimento) {
+        const date = new Date(initialData.dataNascimento);
+        if (!isNaN(date.getTime())) {
+          birthDate = date.toISOString().split('T')[0];
+        }
+      }
       setFormData({
         nome: initialData.nome || '',
-        dataNascimento: initialData.dataNascimento || '',
+        dataNascimento: birthDate,
         carteirinha: initialData.carteirinha || '',
         cpf: initialData.cpf ? formatCPF(initialData.cpf) : '',
       });
