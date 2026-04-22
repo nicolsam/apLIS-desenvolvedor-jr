@@ -41,7 +41,7 @@ Este sistema permite cadastrar médicos com CRM e UF, além de pacientes com dad
 
 ```bash
 # 1. Clone o repositório
-git clone <repository-url>
+git clone https://github.com/nicolsam/apLIS-desenvolvedor-jr.git
 cd apLIS-desenvolvedor-jr
 
 # 2. Copie o arquivo de exemplo e configure as variáveis de ambiente (opcional)
