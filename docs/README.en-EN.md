@@ -41,7 +41,7 @@ This system allows registering doctors with CRM and UF, as well as patients with
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
+git clone https://github.com/nicolsam/apLIS-desenvolvedor-jr.git
 cd apLIS-desenvolvedor-jr
 
 # 2. Copy the example file and configure environment variables (optional)
