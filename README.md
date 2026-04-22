@@ -22,10 +22,11 @@ Este sistema permite cadastrar médicos com CRM e UF, além de pacientes com dad
 
 1. [Sobre o projeto](#sobre-o-projeto)
 2. [Como executar localmente](#como-executar-localmente)
-3. [Tecnologias utilizadas](#tecnologias-utilizadas)
-4. [Funcionalidades](#funcionalidades)
-5. [Estrutura de pastas](#estrutura-de-pastas)
-6. [Autor](#autor)
+3. [Testes](#testes)
+4. [Tecnologias utilizadas](#tecnologias-utilizadas)
+5. [Funcionalidades](#funcionalidades)
+6. [Estrutura de pastas](#estrutura-de-pastas)
+7. [Autor](#autor)
 
 ---
 
@@ -122,6 +123,30 @@ NGINX_PORT=9000
 FRONTEND_PORT=5174
 PHPMYADMIN_PORT=8080
 ```
+
+---
+
+## Testes
+
+O projeto inclui testes unitários para ambas as APIs backend, garantindo a qualidade e confiabilidade do código.
+
+### Backend PHP (Médicos)
+
+- Framework de testes: **PHPUnit**
+- Cobertura: Controladores e Models
+- Executar testes:
+  ```bash
+  docker compose exec php php vendor/bin/phpunit
+  ```
+
+### Backend Node.js (Pacientes)
+
+- Framework de testes: **Jest**
+- Cobertura: Controladores e Models
+- Executar testes:
+  ```bash
+  docker compose exec nodejs npm test
+  ```
 
 ---
 

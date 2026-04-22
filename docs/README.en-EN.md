@@ -22,10 +22,11 @@ This system allows registering doctors with CRM and UF, as well as patients with
 
 1. [About the project](#about-the-project)
 2. [How to run locally](#how-to-run-locally)
-3. [Technologies used](#technologies-used)
-4. [Features](#features)
-5. [Folder structure](#folder-structure)
-6. [Author](#author)
+3. [Tests](#tests)
+4. [Technologies used](#technologies-used)
+5. [Features](#features)
+6. [Folder structure](#folder-structure)
+7. [Author](#author)
 
 ---
 
@@ -122,6 +123,30 @@ NGINX_PORT=9000
 FRONTEND_PORT=5174
 PHPMYADMIN_PORT=8080
 ```
+
+---
+
+## Tests
+
+The project includes unit tests for both backend APIs, ensuring code quality and reliability.
+
+### Backend PHP (Doctors)
+
+- Test framework: **PHPUnit**
+- Coverage: Controllers and Models
+- Run tests:
+  ```bash
+  docker compose exec php php vendor/bin/phpunit
+  ```
+
+### Backend Node.js (Patients)
+
+- Test framework: **Jest**
+- Coverage: Controllers and Models
+- Run tests:
+  ```bash
+  docker compose exec nodejs npm test
+  ```
 
 ---
 
