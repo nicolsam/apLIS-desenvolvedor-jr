@@ -1,4 +1,9 @@
 # Painel apLIS
+
+> 📄 This is the English version.
+> 
+> [Mudar para Português](./README.pt-BR.md)
+
 [![forthebadge](https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=CRAFT+WITH&secondaryLabel=JAVASCRIPT&primaryBGColor=%23edc70e&primaryTextColor=%232f3600&secondaryBGColor=%23ffff13&secondaryTextColor=%232f3600&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&secondaryIcon=javascript&secondaryIconColor=%232f3600&secondaryIconSize=16&secondaryIconPosition=left)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=CRAFT+WITH&secondaryLabel=PHP&primaryBGColor=%237b7fb5&primaryTextColor=%23ffffff&secondaryBGColor=%234b4e8a&secondaryTextColor=%23ffffff&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&secondaryIcon=php&secondaryIconColor=%237b7fb5&secondaryIconSize=16&secondaryIconPosition=left)](https://vite.dev/)
 [![forthebadge](https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=CRAFT+WITH&secondaryLabel=REACT&primaryBGColor=%2358c6de&primaryTextColor=%232f3600&secondaryBGColor=%232d7080&secondaryTextColor=%23ffffff&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&secondaryIcon=reactquery&secondaryIconColor=%2358c6de&secondaryIconSize=16&secondaryIconPosition=left)](https://react.dev/)
@@ -38,7 +43,10 @@ This system allows registering doctors with CRM and UF, as well as patients with
 git clone <repository-url>
 cd apLIS-desenvolvedor-jr
 
-# 2. Start the containers
+# 2. Copy the example file and configure environment variables (optional)
+cp .env.example .env
+
+# 3. Start the containers
 docker compose up -d
 
 # 3. Wait for all services to start (approximately 30 seconds)
@@ -94,6 +102,26 @@ docker compose exec nodejs npm test
 - `PUT /api/v1/pacientes/:id` - Update patient
 - `DELETE /api/v1/pacientes/:id` - Remove patient (soft delete)
 - `POST /api/v1/pacientes/:id/restore` - Restore removed patient
+
+### Environment variables configuration
+
+The project supports configuration via `.env` file. Copy `.env.example` to `.env` and adjust as needed.
+
+```env
+# Database Configuration
+DB_HOST=mysql
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=root_password
+DB_NAME=aplis_test
+
+# Service Ports
+PHP_PORT=9000
+NODE_PORT=3000
+NGINX_PORT=9000
+FRONTEND_PORT=5174
+PHPMYADMIN_PORT=8080
+```
 
 ---
 
