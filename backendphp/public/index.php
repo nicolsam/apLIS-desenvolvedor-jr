@@ -25,6 +25,9 @@ if ($uri === '/api/v1/medicos' && $requestMethod === 'GET') {
 } elseif (preg_match('#^/api/v1/medicos/(\d+)$#', $uri, $matches) && $requestMethod === 'DELETE') {
     $controller = new \App\Controller\MedicoController();
     $controller->destroy((int)$matches[1]);
+} elseif (preg_match('#^/api/v1/medicos/(\d+)/restore$#', $uri, $matches) && $requestMethod === 'POST') {
+    $controller = new \App\Controller\MedicoController();
+    $controller->restore((int)$matches[1]);
 } else {
     http_response_code(404);
     echo json_encode(['error' => 'Endpoint not found']);

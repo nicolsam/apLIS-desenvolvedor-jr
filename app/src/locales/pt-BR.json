@@ -64,7 +64,8 @@
   "delete": {
     "removed": "Registro removido",
     "undo": "Desfazer",
-    "undoComing": "Funcionalidade de desfazer em breve"
+    "undoComing": "Funcionalidade de desfazer em breve",
+    "restored": "Registro restaurado"
   },
   "validation": {
     "required": "Campo obrigatório",

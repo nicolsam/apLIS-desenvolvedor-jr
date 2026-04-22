@@ -5,12 +5,15 @@ const ToastContext = createContext();
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
-  const addToast = (message, type = 'info', duration = 5000) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => {
-      removeToast(id);
-    }, duration);
+  const addToast = (message, type = 'info', duration = 5000, undoLabel = null, onUndo = null, id = null) => {
+    const toastId = id || Date.now();
+    setToasts((prev) => [...prev, { id: toastId, message, type, undoLabel, onUndo }]);
+    
+    if (duration > 0) {
+      setTimeout(() => {
+        removeToast(toastId);
+      }, duration);
+    }
   };
 
   const removeToast = (id) => {
@@ -31,14 +34,27 @@ export function ToastProvider({ children }) {
             }`}
           >
             <span className="text-sm">{toast.message}</span>
-            <button
-              onClick={() => removeToast(toast.id)}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-2">
+              {toast.undoLabel && toast.onUndo && (
+                <button
+                  onClick={() => {
+                    toast.onUndo();
+                    removeToast(toast.id);
+                  }}
+                  className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  {toast.undoLabel}
+                </button>
+              )}
+              <button
+                onClick={() => removeToast(toast.id)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         ))}
       </div>

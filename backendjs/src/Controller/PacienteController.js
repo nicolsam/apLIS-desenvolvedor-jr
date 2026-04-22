@@ -83,6 +83,22 @@ class PacienteController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  async restore(req, res) {
+    try {
+      const { id } = req.params;
+      
+      const exists = await Paciente.findDeleted(id);
+      if (!exists) {
+        return res.status(404).json({ error: t('not_found', req) });
+      }
+
+      await Paciente.restore(id);
+      res.json({ message: t('patient_restored', req) });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = new PacienteController();

@@ -114,4 +114,24 @@ class MedicoController
             echo json_encode(['error' => \Translator::get('error_deleting')]);
         }
     }
+
+    public function restore(int $id): void
+    {
+        $medico = new \App\Model\Medico();
+        
+        $stmt = $medico->findDeleted($id);
+        if (!$stmt) {
+            http_response_code(404);
+            echo json_encode(['error' => \Translator::get('not_found')]);
+            return;
+        }
+
+        $result = $medico->restore($id);
+        if ($result) {
+            echo json_encode(['message' => \Translator::get('doctor_restored')]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => \Translator::get('error_restoring')]);
+        }
+    }
 }

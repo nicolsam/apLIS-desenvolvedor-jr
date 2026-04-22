@@ -30,6 +30,7 @@ export async function createPaciente(data) {
   const payload = {
     ...data,
     cpf: data.cpf.replace(/\D/g, ''),
+    dataNascimento: data.dataNascimento ? data.dataNascimento.split('T')[0] : null,
   };
   
   const response = await fetch(API_URL, {
@@ -52,6 +53,7 @@ export async function updatePaciente(id, data) {
   const payload = {
     ...data,
     cpf: data.cpf.replace(/\D/g, ''),
+    dataNascimento: data.dataNascimento ? data.dataNascimento.split('T')[0] : null,
   };
   
   const response = await fetch(`${API_URL}/${id}`, {
@@ -81,6 +83,21 @@ export async function deletePaciente(id) {
   
   if (!response.ok) {
     throw new Error(JSON.stringify({ error: result.error || 'Erro ao remover paciente' }));
+  }
+  return result;
+}
+
+export async function restorePaciente(id) {
+  const response = await fetch(`${API_URL}/${id}/restore`, {
+    method: 'POST',
+    headers: {
+      'Accept-Language': i18n.language,
+    },
+  });
+  const result = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(JSON.stringify({ error: result.error || 'Erro ao restaurar paciente' }));
   }
   return result;
 }

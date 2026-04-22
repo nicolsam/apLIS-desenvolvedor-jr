@@ -64,7 +64,8 @@
   "delete": {
     "removed": "Record removed",
     "undo": "Undo",
-    "undoComing": "Undo feature coming soon"
+    "undoComing": "Undo feature coming soon",
+    "restored": "Record restored"
   },
   "validation": {
     "required": "Field required",

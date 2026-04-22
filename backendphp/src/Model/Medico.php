@@ -27,6 +27,14 @@ class Medico
         return $result ?: null;
     }
 
+    public function findDeleted(int $id): ?array
+    {
+        $stmt = $this->db->prepare("SELECT id, nome, CRM, UFCRM FROM medicos WHERE id = :id AND deleted_at IS NOT NULL");
+        $stmt->execute([':id' => $id]);
+        $result = $stmt->fetch();
+        return $result ?: null;
+    }
+
     public function create(array $data): bool
     {
         try {
@@ -58,6 +66,12 @@ class Medico
     public function delete(int $id): bool
     {
         $stmt = $this->db->prepare("UPDATE medicos SET deleted_at = NOW() WHERE id = :id AND deleted_at IS NULL");
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function restore(int $id): bool
+    {
+        $stmt = $this->db->prepare("UPDATE medicos SET deleted_at = NULL WHERE id = :id AND deleted_at IS NOT NULL");
         return $stmt->execute([':id' => $id]);
     }
 }

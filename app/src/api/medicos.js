@@ -74,3 +74,18 @@ export async function deleteMedico(id) {
   }
   return result;
 }
+
+export async function restoreMedico(id) {
+  const response = await fetch(`${API_URL}/${id}/restore`, {
+    method: 'POST',
+    headers: {
+      'Accept-Language': i18n.language,
+    },
+  });
+  const result = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(JSON.stringify({ error: result.error || 'Erro ao restaurar médico' }));
+  }
+  return result;
+}

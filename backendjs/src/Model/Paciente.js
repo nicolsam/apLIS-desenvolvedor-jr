@@ -34,6 +34,17 @@ class Paciente {
       deleted_at: knex.fn.now()
     });
   }
+
+  async findDeleted(id) {
+    const result = await knex('pacientes').select('id', 'nome', 'dataNascimento', 'carteirinha', 'cpf').where('id', id).whereNotNull('deleted_at').first();
+    return result || null;
+  }
+
+  async restore(id) {
+    return knex('pacientes').where('id', id).whereNotNull('deleted_at').update({
+      deleted_at: null
+    });
+  }
 }
 
 module.exports = new Paciente();
