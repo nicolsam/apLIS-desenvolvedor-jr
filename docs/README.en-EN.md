@@ -16,10 +16,84 @@ This system allows registering doctors with CRM and UF, as well as patients with
 ## Table of Contents
 
 1. [About the project](#about-the-project)
-2. [Technologies used](#technologies-used)
-3. [Features](#features)
-4. [Folder structure](#folder-structure)
-5. [Author](#author)
+2. [How to run locally](#how-to-run-locally)
+3. [Technologies used](#technologies-used)
+4. [Features](#features)
+5. [Folder structure](#folder-structure)
+6. [Author](#author)
+
+---
+
+## How to run locally
+
+### Prerequisites
+
+- Docker and Docker Compose installed
+- Git installed
+
+### Step by step
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd apLIS-desenvolvedor-jr
+
+# 2. Start the containers
+docker compose up -d
+
+# 3. Wait for all services to start (approximately 30 seconds)
+
+# 4. Access the services:
+# Frontend (React):     http://localhost:5174
+# PHP API (Doctors):    http://localhost:9000
+# Node API (Patients):  http://localhost:3000
+# phpMyAdmin:           http://localhost:8080
+```
+
+### Credentials
+
+| Service | Username | Password |
+|---------|----------|----------|
+| MySQL | root | root_password |
+| phpMyAdmin | root | root_password |
+
+### Useful commands
+
+```bash
+# View container logs
+docker compose logs -f
+
+# Stop containers
+docker compose down
+
+# Rebuild and start (after changes)
+docker compose build
+docker compose up -d
+
+# Run PHP backend tests
+docker compose exec php php vendor/bin/phpunit
+
+# Run Node.js backend tests
+docker compose exec nodejs npm test
+```
+
+### Endpoint structure
+
+**Doctors API (PHP)**
+- `GET /api/v1/medicos` - List doctors
+- `GET /api/v1/medicos/:id` - Get doctor by ID
+- `POST /api/v1/medicos` - Create doctor
+- `PUT /api/v1/medicos/:id` - Update doctor
+- `DELETE /api/v1/medicos/:id` - Remove doctor (soft delete)
+- `POST /api/v1/medicos/:id/restore` - Restore removed doctor
+
+**Patients API (Node.js)**
+- `GET /api/v1/pacientes` - List patients
+- `GET /api/v1/pacientes/:id` - Get patient by ID
+- `POST /api/v1/pacientes` - Create patient
+- `PUT /api/v1/pacientes/:id` - Update patient
+- `DELETE /api/v1/pacientes/:id` - Remove patient (soft delete)
+- `POST /api/v1/pacientes/:id/restore` - Restore removed patient
 
 ---
 

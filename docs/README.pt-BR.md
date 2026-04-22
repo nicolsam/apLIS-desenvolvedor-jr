@@ -17,10 +17,84 @@ Este sistema permite cadastrar médicos com CRM e UF, além de pacientes com dad
 ## Sumário
 
 1. [Sobre o projeto](#sobre-o-projeto)
-2. [Tecnologias utilizadas](#tecnologias-utilizadas)
-3. [Funcionalidades](#funcionalidades)
-4. [Estrutura de pastas](#estrutura-de-pastas)
-5. [Autor](#autor)
+2. [Como executar localmente](#como-executar-localmente)
+3. [Tecnologias utilizadas](#tecnologias-utilizadas)
+4. [Funcionalidades](#funcionalidades)
+5. [Estrutura de pastas](#estrutura-de-pastas)
+6. [Autor](#autor)
+
+---
+
+## Como executar localmente
+
+### Pré-requisitos
+
+- Docker e Docker Compose instalados
+- Git instalado
+
+### Passo a passo
+
+```bash
+# 1. Clone o repositório
+git clone <repository-url>
+cd apLIS-desenvolvedor-jr
+
+# 2. Inicie os containers
+docker compose up -d
+
+# 3. Aguarde todos os serviços iniciarem (aproximadamente 30 segundos)
+
+# 4. Acesse os serviços:
+# Frontend (React):     http://localhost:5174
+# API PHP (Médicos):    http://localhost:9000
+# API Node (Pacientes): http://localhost:3000
+# phpMyAdmin:           http://localhost:8080
+```
+
+### Credenciais
+
+| Serviço | Usuário | Senha |
+|---------|---------|-------|
+| MySQL | root | root_password |
+| phpMyAdmin | root | root_password |
+
+### Comandos úteis
+
+```bash
+# Ver logs dos containers
+docker compose logs -f
+
+# Parar os containers
+docker compose down
+
+# Rebuild e iniciar (após alterações)
+docker compose build
+docker compose up -d
+
+# Executar testes do backend PHP
+docker compose exec php php vendor/bin/phpunit
+
+# Executar testes do backend Node.js
+docker compose exec nodejs npm test
+```
+
+### Estrutura dos endpoints
+
+**API de Médicos (PHP)**
+- `GET /api/v1/medicos` - Listar médicos
+- `GET /api/v1/medicos/:id` - Buscar médico por ID
+- `POST /api/v1/medicos` - Criar médico
+- `PUT /api/v1/medicos/:id` - Atualizar médico
+- `DELETE /api/v1/medicos/:id` - Remover médico (soft delete)
+- `POST /api/v1/medicos/:id/restore` - Restaurar médico removido
+
+**API de Pacientes (Node.js)**
+- `GET /api/v1/pacientes` - Listar pacientes
+- `GET /api/v1/pacientes/:id` - Buscar paciente por ID
+- `POST /api/v1/pacientes` - Criar paciente
+- `PUT /api/v1/pacientes/:id` - Atualizar paciente
+- `DELETE /api/v1/pacientes/:id` - Remover paciente (soft delete)
+- `POST /api/v1/pacientes/:id/restore` - Restaurar paciente removido
 
 ---
 
